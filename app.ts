@@ -1,6 +1,6 @@
 const express = require("express");
 import { ApolloServer } from "apollo-server-express";
-import { resolvers } from "./src/database/resolvers";
+import resolvers from "./src/database/resolvers";
 import { graphType } from "./src/types/types";
 
 const server = new ApolloServer({ typeDefs: graphType, resolvers });

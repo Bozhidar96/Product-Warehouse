@@ -1,6 +1,6 @@
 import pool from "../database/connection";
 
-export const warehouseQueries = {
+const warehouseQueries = {
   warehouses: async () => {
     const result = await pool.query("SELECT * FROM warehouses");
     return result.rows;

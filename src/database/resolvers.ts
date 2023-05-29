@@ -4,7 +4,7 @@ import productQueries from "../queries/productQueries";
 import stockQueries from "../queries/stockQueries";
 import warehouseQueries from "../queries/warehouseQueries";
 
-export const resolvers: IResolvers = {
+const resolvers: IResolvers = {
   Query: {
     ...productQueries,
     ...warehouseQueries,
@@ -12,3 +12,5 @@ export const resolvers: IResolvers = {
   },
   Mutation: mutations,
 };
+
+export default resolvers;
