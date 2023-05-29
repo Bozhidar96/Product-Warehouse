@@ -3,11 +3,19 @@ import { ApolloServer } from "apollo-server-express";
 import resolvers from "./src/database/resolvers";
 import { graphType } from "./src/types/types";
 
-const server = new ApolloServer({ typeDefs: graphType, resolvers });
+const startServer = async () => {
+  const server = new ApolloServer({ typeDefs: graphType, resolvers });
 
-const app = express();
-server.applyMiddleware({ app });
+  await server.start();
 
-app.listen({ port: 4000 }, () => {
-  console.log(`Server running at http://localhost:4000${server.graphqlPath}`);
+  const app = express();
+  server.applyMiddleware({ app });
+
+  app.listen({ port: 4000 }, () => {
+    console.log(`Server running at http://localhost:4000${server.graphqlPath}`);
+  });
+};
+
+startServer().catch((error) => {
+  console.error("Error when starting the server: ", error);
 });
