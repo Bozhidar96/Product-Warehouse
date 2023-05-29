@@ -1,4 +1,4 @@
-import pool from "../database";
+import pool from "../database/connection";
 
 const mutations = {
   addProduct: async (_, { name, size, isHazardous }) => {

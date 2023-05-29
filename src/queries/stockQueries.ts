@@ -1,14 +1,6 @@
-import pool from "../database";
+import pool from "../database/connection";
 
-const queries = {
-  products: async () => {
-    const result = await pool.query("SELECT * FROM products");
-    return result.rows;
-  },
-  warehouses: async () => {
-    const result = await pool.query("SELECT * FROM warehouses");
-    return result.rows;
-  },
+const stockQueries = {
   stockMovements: async (_, { warehouseId }) => {
     const result = await pool.query(
       "SELECT * FROM stock_movements WHERE warehouse_id = $1",
@@ -44,4 +36,4 @@ const queries = {
   },
 };
 
-export default queries;
+export default stockQueries;

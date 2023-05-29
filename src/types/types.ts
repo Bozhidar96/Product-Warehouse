@@ -1,6 +1,6 @@
 import { gql } from "apollo-server-express";
 
-const graphType = gql`
+export const graphType = gql`
   type Product {
     id: ID!
     name: String!
@@ -43,4 +43,3 @@ const graphType = gql`
     addStockMovement(input: StockMovementInput!): StockMovement
   }
 `;
-export default graphType;
