@@ -1,27 +1,36 @@
-import pool from "../database/connection";
+import { getRepository } from "typeorm";
+import { Product } from "../models/Product";
+import { Warehouse } from "../models/Warehouse";
+import { Stock } from "../models/Stock";
 
 const mutations = {
   addProduct: async (_, { name, size, isHazardous }) => {
-    const result = await pool.query(
-      "INSERT INTO products (name, size, is_hazardous) VALUES ($1, $2, $3) RETURNING *",
-      [name, size, isHazardous]
-    );
-    return result.rows[0];
+    const productRepository = getRepository(Product);
+    const product = new Product();
+    product.name = name;
+    product.size = size;
+    product.isHazardous = isHazardous;
+    const newProduct = await productRepository.save(product);
+    return newProduct;
   },
   addWarehouse: async (_, { name, size }) => {
-    const result = await pool.query(
-      "INSERT INTO warehouses (name, size) VALUES ($1, $2) RETURNING *",
-      [name, size]
-    );
-    return result.rows[0];
+    const warehouseRepository = getRepository(Warehouse);
+    const warehouse = new Warehouse();
+    warehouse.name = name;
+    warehouse.size = size;
+    const newWarehouse = await warehouseRepository.save(warehouse);
+    return newWarehouse;
   },
   addStockMovement: async (_, { input }) => {
     const { productId, warehouseId, amount, date } = input;
-    const result = await pool.query(
-      "INSERT INTO stock_movements (product_id, warehouse_id, amount, date) VALUES ($1, $2, $3, $4) RETURNING *",
-      [productId, warehouseId, amount, date]
-    );
-    return result.rows[0];
+    const stockMovementRepository = getRepository(Stock);
+    const stockMovement = new Stock();
+    stockMovement.productId = productId;
+    stockMovement.warehouseId = warehouseId;
+    stockMovement.amount = amount;
+    stockMovement.date = date;
+    const newStockMovement = await stockMovementRepository.save(stockMovement);
+    return newStockMovement;
   },
 };
 
