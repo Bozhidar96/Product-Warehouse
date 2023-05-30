@@ -1,9 +1,11 @@
-import pool from "../database/connection";
+import { Warehouse } from "../models/Warehouse";
+import { getRepository } from "typeorm";
 
 const warehouseQueries = {
   warehouses: async () => {
-    const result = await pool.query("SELECT * FROM warehouses");
-    return result.rows;
+    const warehouseRepository = getRepository(Warehouse);
+    const warehouses = await warehouseRepository.find();
+    return warehouses;
   },
 };
 
