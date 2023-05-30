@@ -1,0 +1,17 @@
+type Stock {
+  id: ID!
+  product: Product!
+  amount: Int!
+  date: String!
+}
+
+input AddStockInput {
+  productId: ID!
+  warehouseId: ID!
+  amount: Int!
+  date: String!
+}
+
+type Mutation {
+  addStock(input: AddStockInput!): Stock
+}
