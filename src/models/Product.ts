@@ -1,16 +1,16 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 
 @Entity()
 export class Product {
   @PrimaryGeneratedColumn()
-  public id!: number;
+  id: number;
 
-  @Column()
-  public name!: string;
+  @Column({ type: "varchar" })
+  name: string;
 
-  @Column()
-  public size!: number;
+  @Column({ type: "float" })
+  size: number;
 
-  @Column()
-  public isHazardous!: boolean;
+  @Column({ type: "boolean" })
+  isHazardous: boolean;
 }

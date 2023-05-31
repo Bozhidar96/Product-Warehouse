@@ -1,4 +1,5 @@
 const express = require("express");
+import "reflect-metadata";
 import { ApolloServer } from "apollo-server-express";
 import resolvers from "./src/graphql/resolvers/resolvers";
 import { typeDefs } from "./src/graphql/typeDefs";
