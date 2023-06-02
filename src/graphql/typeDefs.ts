@@ -1,6 +1,6 @@
 import { gql } from "apollo-server-express";
 
-export const graphType = gql`
+export const typeDefs = gql`
   type Product {
     id: ID!
     name: String!
