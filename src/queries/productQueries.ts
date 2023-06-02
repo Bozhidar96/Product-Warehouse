@@ -1,9 +1,11 @@
-import pool from "../database/connection";
+import { getRepository } from "typeorm";
+import { Product } from "../models/Product";
 
 const productQueries = {
   products: async () => {
-    const result = await pool.query("SELECT * FROM products");
-    return result.rows;
+    const productRepository = getRepository(Product);
+    const products = await productRepository.find();
+    return products;
   },
 };
 

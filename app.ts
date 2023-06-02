@@ -1,10 +1,11 @@
 const express = require("express");
+import "reflect-metadata";
 import { ApolloServer } from "apollo-server-express";
-import resolvers from "./src/database/resolvers";
-import { graphType } from "./src/types/types";
+import resolvers from "./src/graphql/resolvers/resolvers";
+import { typeDefs } from "./src/graphql/typeDefs";
 
 const startServer = async () => {
-  const server = new ApolloServer({ typeDefs: graphType, resolvers });
+  const server = new ApolloServer({ typeDefs, resolvers });
 
   await server.start();
 

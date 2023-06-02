@@ -1,32 +1,45 @@
-import pool from "../database/connection";
+import { getRepository } from "typeorm";
+import { Stock } from "../models/Stock";
+import { Warehouse } from "../models/Warehouse";
 
 const stockQueries = {
   stockMovements: async (_, { warehouseId }) => {
-    const result = await pool.query(
-      `SELECT * FROM stock_movements WHERE warehouse_id = ${warehouseId}`
-    );
-    return result.rows;
+    const stockRepository = getRepository(Stock);
+    const stockMovements = await stockRepository.find({
+      where: { warehouse: { id: warehouseId } },
+    });
+    return stockMovements;
   },
   currentStock: async (_, { warehouseId }) => {
-    const warehouseResult = await pool.query(
-      `SELECT size FROM warehouses WHERE id = ${warehouseId}`
-    );
-    const stockResult = await pool.query(
-      `SELECT COALESCE(SUM(amount), 0) FROM stock_movements WHERE warehouse_id = ${warehouseId}`
-    );
-    const warehouseSize = warehouseResult.rows[0].size;
-    const currentStock = stockResult.rows[0].coalesce;
+    const warehouseRepository = getRepository(Warehouse);
+    const warehouse = await warehouseRepository.findOne(warehouseId);
+
+    const stockRepository = getRepository(Stock);
+    const stockResult = await stockRepository
+      .createQueryBuilder("stock")
+      .select("COALESCE(SUM(stock.amount), 0)", "totalAmount")
+      .where("stock.warehouse = :warehouseId", { warehouseId })
+      .getRawOne();
+
+    const warehouseSize = warehouse.size;
+    const currentStock = stockResult.totalAmount;
+
     return warehouseSize - currentStock;
   },
   remainingSpace: async (_, { warehouseId }) => {
-    const warehouseResult = await pool.query(
-      `SELECT size FROM warehouses WHERE id = ${warehouseId}`
-    );
-    const stockResult = await pool.query(
-      `SELECT COALESCE(SUM(amount), 0) FROM stock_movements WHERE warehouse_id = ${warehouseId}`
-    );
-    const warehouseSize = warehouseResult.rows[0].size;
-    const currentStock = stockResult.rows[0].coalesce;
+    const warehouseRepository = getRepository(Warehouse);
+    const warehouse = await warehouseRepository.findOne(warehouseId);
+
+    const stockRepository = getRepository(Stock);
+    const stockResult = await stockRepository
+      .createQueryBuilder("stock")
+      .select("COALESCE(SUM(stock.amount), 0)", "totalAmount")
+      .where("stock.warehouse = :warehouseId", { warehouseId })
+      .getRawOne();
+
+    const warehouseSize = warehouse.size;
+    const currentStock = stockResult.totalAmount;
+
     return warehouseSize - currentStock;
   },
 };

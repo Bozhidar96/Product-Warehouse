@@ -1,0 +1,35 @@
+type Warehouse {
+  id: ID!
+  name: String!
+  size: Float!
+  stocks: [Stock!]!
+}
+
+type Stock {
+  id: ID!
+  product: Product!
+  amount: Int!
+  date: String!
+}
+
+input AddWarehouseInput {
+  name: String!
+  size: Float!
+}
+
+input AddStockInput {
+  productId: ID!
+  warehouseId: ID!
+  amount: Int!
+  date: String!
+}
+
+type Query {
+  warehouses: [Warehouse!]!
+  warehouse(id: ID!): Warehouse
+}
+
+type Mutation {
+  addWarehouse(input: AddWarehouseInput!): Warehouse
+  addStock(input: AddStockInput!): Stock
+}
